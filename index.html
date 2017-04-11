@@ -1,0 +1,201 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    
+    <link rel="stylesheet" href="bootstrap.min.css" />
+    	
+    <style>
+    	body{
+    		background-image: url(1.jpg);
+    		background-size: cover;
+    	}
+        input{
+            width: 100%;
+            height: 30px;
+        }
+        .title{
+        	font:60px "微软雅黑";
+        	color: white;
+        	text-align: center;
+        }
+        .form-control{
+        	background-color: rgba(255,255,255,.5);
+        	border: 1px solid white;
+        }
+        ul{
+            margin: 0;
+            padding: 0;
+            display: none;
+        }
+        li{
+            list-style: none;
+            background-color: #f9c1d2;
+            margin-top: 3px;
+            line-height: 30px;
+            width: 100%;
+        }
+        a{
+            text-decoration: none;
+            color:white;
+            display: block;
+            width: 100%;
+        }
+        a:hover,.hover{
+            background-color: #afd5fb;
+        }
+        #box{
+            width: 500px;
+            margin: 100px auto 0;
+        }
+        .active{
+            background-color: #60625b;
+        }
+    </style>
+    <script>
+        window.onload=function(){
+        	var text=document.getElementById("s");
+        	var list=document.getElementById("list");
+        	var lis=document.getElementsByTagName("li");
+        	var as=list.getElementsByTagName("a");
+        	
+        	var num=-1;
+        	var arr=[];//用来存lis的num
+        	
+        	//text获取焦点
+        	text.onfocus=function(){
+        		list.style.display="block";
+        	}
+        	
+        	document.onkeydown=function(e){
+        		//enter按下时
+        		if(e.keyCode==13){
+        			text.focus();	//text获取焦点
+        			
+        			if(e.ctrlKey==false){
+        				arr=[num];
+        			}else{
+        				if(inArray(num,arr)==-1){
+        					arr.push(num);
+        				}else{
+        					remove(num,arr);
+        				}
+        			}
+        			clear();
+	        		addClass();
+        		}
+        		//向下
+        		if(e.keyCode==40){
+        			clear();
+        			addClass();
+        			
+        			num++;
+        			if(num>=lis.length){
+        				num=0;
+        			}
+        			lis[num].className="hover";
+        		}
+        		//向上
+        		if(e.keyCode==38){
+        			clear();
+        			addClass();
+        			
+        			num--;
+        			if(num<0){
+        				num=lis.length-1;
+        			}
+        			lis[num].className="hover";
+        		}
+        	}
+        	//输入框点击
+        	text.onclick=function(e){
+        		e.stopPropagation();
+        		list.style.display="block";
+        	}
+        	//lis点击
+        	for(var i=0;i<lis.length;i++){
+        		lis[i].index=i;
+        		lis[i].onclick=function(e){
+        			e.stopPropagation();
+        			num=this.index;
+        			if(e.ctrlKey==false){
+        				arr=[num];
+        			}else{
+        				if(inArray(num,arr)==-1){
+        					arr.push(num);
+        				}else{
+        					remove(num,arr);
+        				}
+        			}
+        			clear();
+	        		addClass();
+        		}
+        	}
+        	//document点击
+        	document.onclick=function(){
+        		list.style.display="none";
+        	}
+        	
+        	//--------函数封装-----------
+        	//删除数组中已经有的Num
+        	function remove(t,arr){
+        		for(var i=0;i<arr.length;i++){
+        			if(arr[i]==t){
+        				arr.splice(i,1);
+        			}
+        		}
+        	}
+        	//清空所有lis的class
+        	function clear(){
+        		for(var i=0;i<lis.length;i++){
+        			lis[i].className="";
+        		}
+        		text.value = '';
+        	}
+        	//给enter键按下后的那个lis加class
+        	function addClass(){
+        		text.value="";
+        		arr.sort(function(a,b){//输入框中文字按下拉的顺序显示
+        			return a-b
+        		})
+        		for(var i=0;i<arr.length;i++){
+        			if( lis[arr[i]] ){
+        				lis[arr[i]].className="active";
+        				text.value += lis[arr[i]] ?  lis[arr[i]].innerText : '';
+        			}
+        		}
+        	}
+        	//检查v是否在arr数组中
+        	function inArray(v,arr){
+        		for(var i=0;i<arr.length;i++){
+        			if(v==arr[i]){
+        				return i;//如果在 则返回位置i
+        			}
+        		}
+        		return -1;//如果不在  返回-1
+        	}
+        }
+    </script>
+</head>
+<body>
+<div id="box">
+	<p class="title">键盘事件</p>
+    <input type="text" id="s" class="form-control"  />
+    <ul id="list">
+        <li><a href="javascript:;">《第七个读者》</a></li>
+        <li><a href="javascript:;">《 心理罪 画像》</a></li>
+        <li><a href="javascript:;">《 心理罪 教化场》</a></li>
+        <li><a href="javascript:;">《 心理罪 暗河》</a></li>
+        <li><a href="javascript:;">《 心理罪 城市之光》</a></li>
+        <li><a href="javascript:;">《地球往事》</a></li>
+        <li><a href="javascript:;">《黑暗森林》</a></li>
+        <li><a href="javascript:;">《死神永生》</a></li>
+        <li><a href="javascript:;">《乡村教师》</a></li>
+        <li><a href="javascript:;">《地球大炮》</a></li>
+    </ul>
+</div>
+</body>
+</html>
